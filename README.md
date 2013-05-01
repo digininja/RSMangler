@@ -1,10 +1,8 @@
 RSMangler: Take a wordlist and mangle it
 ========================================
 
-Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com
-
-Robin Wood <robin@digininja.org>
-
+Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com  
+Robin Wood <robin@digininja.org>  
 Version 1.4
 
 RSMangler will take a wordlist and perform various manipulations on it similar
