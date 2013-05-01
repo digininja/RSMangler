@@ -45,39 +45,39 @@ common_words = [
 ]
 
 opts = GetoptLong.new(
-	[ '--help', '-h', GetoptLong::NO_ARGUMENT ],
-	[ '--file', '-f', GetoptLong::REQUIRED_ARGUMENT ],
-	[ '--min', '-m', GetoptLong::REQUIRED_ARGUMENT ],
-	[ '--max', '-x', GetoptLong::REQUIRED_ARGUMENT ],
-	[ '--perms', '-p', GetoptLong::NO_ARGUMENT ],
-	[ '--double', '-d', GetoptLong::NO_ARGUMENT ],
-	[ '--reverse', '-r', GetoptLong::NO_ARGUMENT ],
-	[ '--leet', '-t', GetoptLong::NO_ARGUMENT ],
-	[ '--full-leet', '-T', GetoptLong::NO_ARGUMENT ],
-	[ '--capital', '-c', GetoptLong::NO_ARGUMENT ],
-	[ '--upper', '-u', GetoptLong::NO_ARGUMENT ],
-	[ '--lower', '-l', GetoptLong::NO_ARGUMENT ],
-	[ '--swap', '-s', GetoptLong::NO_ARGUMENT ],
-	[ '--ed', '-e', GetoptLong::NO_ARGUMENT ],
-	[ '--ing', '-i', GetoptLong::NO_ARGUMENT ],
-	[ '--punctuation', GetoptLong::NO_ARGUMENT ],
-	[ '--years', "-y", GetoptLong::NO_ARGUMENT ],
-	[ '--acronym', "-a",  GetoptLong::NO_ARGUMENT ],
-	[ '--common', "-C",  GetoptLong::NO_ARGUMENT ],
-	[ '--pnb',  GetoptLong::NO_ARGUMENT ],
-	[ '--pna',  GetoptLong::NO_ARGUMENT ],
-	[ '--nb', GetoptLong::NO_ARGUMENT ],
-	[ '--na', GetoptLong::NO_ARGUMENT ],
-	[ '--force', GetoptLong::NO_ARGUMENT ],
-	[ '--space', GetoptLong::NO_ARGUMENT ],
-	[ "-v" , GetoptLong::NO_ARGUMENT ]
-	)
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--file', '-f', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--min', '-m', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--max', '-x', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--perms', '-p', GetoptLong::NO_ARGUMENT ],
+  [ '--double', '-d', GetoptLong::NO_ARGUMENT ],
+  [ '--reverse', '-r', GetoptLong::NO_ARGUMENT ],
+  [ '--leet', '-t', GetoptLong::NO_ARGUMENT ],
+  [ '--full-leet', '-T', GetoptLong::NO_ARGUMENT ],
+  [ '--capital', '-c', GetoptLong::NO_ARGUMENT ],
+  [ '--upper', '-u', GetoptLong::NO_ARGUMENT ],
+  [ '--lower', '-l', GetoptLong::NO_ARGUMENT ],
+  [ '--swap', '-s', GetoptLong::NO_ARGUMENT ],
+  [ '--ed', '-e', GetoptLong::NO_ARGUMENT ],
+  [ '--ing', '-i', GetoptLong::NO_ARGUMENT ],
+  [ '--punctuation', GetoptLong::NO_ARGUMENT ],
+  [ '--years', "-y", GetoptLong::NO_ARGUMENT ],
+  [ '--acronym', "-a",  GetoptLong::NO_ARGUMENT ],
+  [ '--common', "-C",  GetoptLong::NO_ARGUMENT ],
+  [ '--pnb',  GetoptLong::NO_ARGUMENT ],
+  [ '--pna',  GetoptLong::NO_ARGUMENT ],
+  [ '--nb', GetoptLong::NO_ARGUMENT ],
+  [ '--na', GetoptLong::NO_ARGUMENT ],
+  [ '--force', GetoptLong::NO_ARGUMENT ],
+  [ '--space', GetoptLong::NO_ARGUMENT ],
+  [ "-v" , GetoptLong::NO_ARGUMENT ]
+)
 
 def good_call
-	puts
-	puts "Good call, either reduce the size of your word list or use the --perms option to disable permutations"
-	puts
-	exit
+  puts
+  puts "Good call, either reduce the size of your word list or use the --perms option to disable permutations"
+  puts
+  exit
 end
 
 # Display the usage
@@ -124,24 +124,24 @@ end
 
 def binaryincrement(binarray)
 	index = binarray.size-1
-  incremented = false
-	while !incremented and index>=0
-		if (binarray[index]==0)
-			binarray[index] = 1
-			incremented = true
-			break
-		else
-			binarray[index]=0
-		end
-		index -= 1
-	end
+	incremented = false
+  while !incremented and index>=0
+  	if (binarray[index]==0)
+  		binarray[index] = 1
+  		incremented = true
+  		break
+  	else
+  		binarray[index]=0
+  	end
+  	index -= 1
+  end
   return binarray
 end
 
 def leet_variations(word, swap_array)
   count = 0
-	swap_array.keys.each do |key|
-	count += word.count(key)
+  swap_array.keys.each do |key|
+  count += word.count(key)
 end
 
 variation = Array.new(count,0)
@@ -165,16 +165,16 @@ src_chars = swap_array.keys.join
 dst_chars = swap_array.values.join
 
 begin
-  tmpword = word.dup
+	tmpword = word.dup
 	variation = binaryincrement(variation)
 	idx = 0
-	variation.each{|changeletter|
-		if (changeletter==1)
-			# Tried tr! but it won't replace inline, probably because it doesn't know where the slice is happening
-			tmpword[leetletterpos[idx],1] = tmpword[leetletterpos[idx],1].tr(src_chars, dst_chars)
+	variation.each do |changeletter|
+		if changeletter == 1
+		  # Tried tr! but it won't replace inline, probably because it doesn't know where the slice is happening
+		  tmpword[leetletterpos[idx],1] = tmpword[leetletterpos[idx],1].tr(src_chars, dst_chars)
 		end
 		idx += 1
-	}
+	end
 	variationarr << tmpword
 end while (variation != Array.new(count,1))
 	return variationarr
@@ -298,22 +298,22 @@ if !force and perms and file_words.length > 5
 	puts "Hit ctrl-c to abort"
 	puts
 
-	interrupted = false
-	trap("INT") { interrupted = true }
+  interrupted = false
+  trap("INT") { interrupted = true }
 
-	5.downto(1) { |i|
-		print i.to_s + " "
-		STDOUT.flush
-		sleep 1
+  5.downto(1) { |i|
+  	print i.to_s + " "
+  	STDOUT.flush
+  	sleep 1
 
-		if interrupted
-			good_call
-		end
-	}
+  	if interrupted
+  		good_call
+  	end
+  }
 
-	if interrupted
-		good_call
-	end
+  if interrupted
+  	good_call
+  end
 end
 
 wordlist = []
@@ -344,69 +344,68 @@ xcommon = false
 wordlist.each do |x|
 	results << x
 
-	results << x+x if double
-	results << x.reverse if reverse
-	results << x.capitalize if capital
-	results << x.downcase if lower
-	results << x.upcase if upper
-	results << x.swapcase if swap
-	results << x + "ed" if ed
-	results << x + "ing" if ing
+  results << x+x if double
+  results << x.reverse if reverse
+  results << x.capitalize if capital
+  results << x.downcase if lower
+  results << x.upcase if upper
+  results << x.swapcase if swap
+  results << x + "ed" if ed
+  results << x + "ing" if ing
 
-	if common
-		common_words.each do |word|
-			results << word + x
-			results << x + word
-		end
+  if common
+  	common_words.each do |word|
+  		results << word + x
+  		results << x + word
+  	end
+  end
+
+  if full_leet
+  	leetarr = leet_variations(x, leet_swap)
+  	leetarr.each do |leetvar|
+  		results << leetvar
+  	end
+  else
+  # Only look at doing this if full leet is not enabled
+
+  # Have to clone it otherwise the assignment is done
+  # by reference and the gsub! updates both x and all_swapped
+  all_swapped = x.clone
+  if leet
+  	leet_swap.each_pair do |find, rep|
+  		all_swapped.gsub!(/#{find}/, rep)
+  		results << x.gsub(/#{find}/, rep)
+  	end
+  	results << all_swapped
+  end
+end
+
+if punctuation
+	for i in ("!@$%^&*()".scan(/./))
+		results << x + i.to_s
 	end
+end
 
-	if full_leet
-		leetarr = leet_variations(x, leet_swap)
-		leetarr.each do |leetvar|
-			results << leetvar	
-		end
-	else
-		# Only look at doing this if full leet is not enabled
-
-		# Have to clone it otherwise the assignment is done
-		# by reference and the gsub! updates both x and all_swapped
-		all_swapped = x.clone
-		if leet
-			leet_swap.each_pair do |find, rep|
-				all_swapped.gsub!(/#{find}/, rep)
-				results << x.gsub(/#{find}/, rep)
-			end
-			results << all_swapped
-		end
+if years
+	for i in (1990..2020)
+		results << i.to_s + x
+		results << x + i.to_s
 	end
+end
 
-
-	if punctuation
-		for i in ("!@$%^&*()".scan(/./))
-			results << x + i.to_s
-		end
+if (pna or pnb)
+	for i in (1..9)
+		results << "0" + i.to_s + x if pnb
+		results << x + "0" + i.to_s if pna
 	end
+end
 
-	if years
-		for i in (1990..2020)
-			results << i.to_s + x
-			results << x + i.to_s
-		end
+if (na or nb)
+	for i in (1..123)
+		results << i.to_s + x if nb
+		results << x + i.to_s if na
 	end
-
-	if (pna or pnb)
-		for i in (1..9)
-			results << "0" + i.to_s + x if pnb
-			results << x + "0" + i.to_s if pna
-		end
-	end
-
-	if (na or nb)
-		for i in (1..123)
-			results << i.to_s + x if nb
-			results << x + i.to_s if na
-		end
-	end
+end
 end
 
 results.uniq!
