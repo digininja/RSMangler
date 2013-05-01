@@ -1,3 +1,5 @@
+![alt text](http://www.randomstorm.com/images/rsmangler_grey.png "RSMangler")
+
 RSMangler: Take a wordlist and mangle it
 ========================================
 
