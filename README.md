@@ -2,7 +2,9 @@ RSMangler: Take a wordlist and mangle it
 ========================================
 
 Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com
+
 Robin Wood <robin@digininja.org>
+
 Version 1.4
 
 RSMangler will take a wordlist and perform various manipulations on it similar
@@ -98,8 +100,8 @@ rsmangler.rb [OPTION]
 Change Log
 ==========
 
-1.4 - Added full leetspeak option, thanks Felipe Molina (@felmoltor)
-1.3 - Support for Ruby 1.9.x
+- 1.4 - Added full leetspeak option, thanks Felipe Molina (@felmoltor)
+- 1.3 - Support for Ruby 1.9.x
 
 Licence
 =======
