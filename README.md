@@ -98,8 +98,15 @@ rsmangler.rb [OPTION]
 Change Log
 ==========
 
-- 1.4 - Added full leetspeak option, thanks Felipe Molina (@felmoltor)
-- 1.3 - Support for Ruby 1.9.x
+- 23.10.2012 - v1.4  
+  Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
+  Added Support for ruby 1.9.x
+
+- 24.08.2010 - v1.1  
+  Added three new mangles - years, acronym, and common.
+
+- 13.07.2010 - v1.0  
+  Initial release
 
 Licence
 =======
