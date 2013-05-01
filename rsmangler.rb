@@ -9,16 +9,16 @@
 #
 # See the README for full information
 #
-# Author:: Robin Wood (robin@digininja.org)
+# Original Author:: Robin Wood (robin@digininja.org)
 # Version:: 1.4
-# Copyright:: Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com
+# Copyright:: Copyright(c) 2012-2013, RandomStorm Limited - www.randomstorm.com
 # Licence:: Creative Commons Attribution-Share Alike 2.0
 #
 # Changes:
 # 1.4 - Added full leetspeak option, thanks Felipe Molina (@felmoltor)
 #
 
-require "date"
+require 'date'
 require 'getoptlong'
 
 # The left hand character is what you are looking for
@@ -26,23 +26,23 @@ require 'getoptlong'
 # with
 
 leet_swap = {
-			"s" => "$",
-			"e" => "3",
-			"a" => "4",
-			"o" => "0",
-			"i" => "1",
-			"l" => "1",
-			"t" => "7",
-			}
+	"s" => "$",
+	"e" => "3",
+	"a" => "4",
+	"o" => "0",
+	"i" => "1",
+	"l" => "1",
+	"t" => "7",
+}
 
 # Common words to append and prepend if --common is allowed
 
 common_words = [
-				"pw",
-				"pwd",
-				"admin",
-				"sys"
-			]
+	"pw",
+	"pwd",
+	"admin",
+	"sys"
+]
 
 opts = GetoptLong.new(
 	[ '--help', '-h', GetoptLong::NO_ARGUMENT ],
@@ -71,7 +71,7 @@ opts = GetoptLong.new(
 	[ '--force', GetoptLong::NO_ARGUMENT ],
 	[ '--space', GetoptLong::NO_ARGUMENT ],
 	[ "-v" , GetoptLong::NO_ARGUMENT ]
-)
+	)
 
 def good_call
 	puts
@@ -84,68 +84,68 @@ end
 def usage
 	puts "rsmangler v 1.4 Robin Wood (robin@digininja.org) <www.randomstorm.com>
 
-To pass the initial words in on standard in do:
+	To pass the initial words in on standard in do:
 
-cat wordlist.txt | ./rsmangler.rb --file - > new_wordlist.rb
+		cat wordlist.txt | ./rsmangler.rb --file - > new_wordlist.rb
 
-All options are ON by default, these parameters turn them OFF
+		All options are ON by default, these parameters turn them OFF
 
-Usage: rsmangler.rb [OPTION]
-	--help, -h: show help
-	--file, -f: the input file, use - for STDIN
-	--max, -x: maximum word length
-	--min, -m: minimum word length
-	--perms, -p: permutate all the words
-	--double, -d: double each word
-	--reverse, -r: reverser the word
-	--leet, -t: l33t speak the word
-	--full-leet, -T: all posibilities l33t
-	--capital, -c: capitalise the word
-	--upper, -u: uppercase the word
-	--lower, -l: lowercase the word
-	--swap, -s: swap the case of the word
-	--ed, -e: add ed to the end of the word
-	--ing, -i: add ing to the end of the word
-	--punctuation: add common punctuation to the end of the word
-	--years, -y: add all years from 1990 to current year to start and end
-	--acronym, -a: create an acronym based on all the words entered in order and add to word list
-	--common, -C: add the following words to start and end: admin, sys, pw, pwd
-	--pna: add 01 - 09 to the end of the word
-	--pnb: add 01 - 09 to the beginning of the word
-	--na: add 1 - 123 to the end of the word
-	--nb: add 1 - 123 to the beginning of the word
-	--force - don't check ooutput size
-	--space - add spaces between words
+		Usage: rsmangler.rb [OPTION]
+		--help, -h: show help
+		--file, -f: the input file, use - for STDIN
+		--max, -x: maximum word length
+		--min, -m: minimum word length
+		--perms, -p: permutate all the words
+		--double, -d: double each word
+		--reverse, -r: reverser the word
+		--leet, -t: l33t speak the word
+		--full-leet, -T: all posibilities l33t
+		--capital, -c: capitalise the word
+		--upper, -u: uppercase the word
+		--lower, -l: lowercase the word
+		--swap, -s: swap the case of the word
+			--ed, -e: add ed to the end of the word
+			--ing, -i: add ing to the end of the word
+			--punctuation: add common punctuation to the end of the word
+			--years, -y: add all years from 1990 to current year to start and end
+			--acronym, -a: create an acronym based on all the words entered in order and add to word list
+			--common, -C: add the following words to start and end: admin, sys, pw, pwd
+			--pna: add 01 - 09 to the end of the word
+			--pnb: add 01 - 09 to the beginning of the word
+			--na: add 1 - 123 to the end of the word
+			--nb: add 1 - 123 to the beginning of the word
+			--force - don't check ooutput size
+			--space - add spaces between words
 
-"
-	exit
-end
-
-def binaryincrement(binarray)
-	index = binarray.size-1
-	incremented = false
-	 while !incremented and index>=0
-		if (binarray[index]==0)
-			binarray[index] = 1
-			incremented = true
-			break
-		else
-			binarray[index]=0
+			"
+			exit
 		end
-		index -= 1
-	end
-	return binarray
-end
 
-def leet_variations(word, swap_array)
-	count = 0
-	swap_array.keys.each do |key|
-		count += word.count(key)
-	end
+		def binaryincrement(binarray)
+			index = binarray.size-1
+			incremented = false
+			while !incremented and index>=0
+				if (binarray[index]==0)
+					binarray[index] = 1
+					incremented = true
+					break
+				else
+					binarray[index]=0
+				end
+				index -= 1
+			end
+			return binarray
+		end
 
-	variation = Array.new(count,0)
-	leetletterpos = Array.new(count,0)
-	variationarr = []
+		def leet_variations(word, swap_array)
+			count = 0
+			swap_array.keys.each do |key|
+				count += word.count(key)
+			end
+
+			variation = Array.new(count,0)
+			leetletterpos = Array.new(count,0)
+			variationarr = []
 	# Save the indexes where the leet letters can be substituted
 	pos = 0
 	iter = 0
@@ -425,3 +425,5 @@ if !max_length.nil? or !min_length.nil?
 end
 
 puts results
+
+exit
