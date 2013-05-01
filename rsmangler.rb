@@ -104,78 +104,79 @@ def usage
 		--upper, -u: uppercase the word
 		--lower, -l: lowercase the word
 		--swap, -s: swap the case of the word
-			--ed, -e: add ed to the end of the word
-			--ing, -i: add ing to the end of the word
-			--punctuation: add common punctuation to the end of the word
-			--years, -y: add all years from 1990 to current year to start and end
-			--acronym, -a: create an acronym based on all the words entered in order and add to word list
-			--common, -C: add the following words to start and end: admin, sys, pw, pwd
-			--pna: add 01 - 09 to the end of the word
-			--pnb: add 01 - 09 to the beginning of the word
-			--na: add 1 - 123 to the end of the word
-			--nb: add 1 - 123 to the beginning of the word
-			--force - don't check ooutput size
-			--space - add spaces between words
+		--ed, -e: add ed to the end of the word
+		--ing, -i: add ing to the end of the word
+		--punctuation: add common punctuation to the end of the word
+		--years, -y: add all years from 1990 to current year to start and end
+		--acronym, -a: create an acronym based on all the words entered in order and add to word list
+		--common, -C: add the following words to start and end: admin, sys, pw, pwd
+		--pna: add 01 - 09 to the end of the word
+		--pnb: add 01 - 09 to the beginning of the word
+		--na: add 1 - 123 to the end of the word
+		--nb: add 1 - 123 to the beginning of the word
+		--force - don't check ooutput size
+		--space - add spaces between words
 
-			"
-			exit
+		"
+
+  exit
+end
+
+def binaryincrement(binarray)
+	index = binarray.size-1
+  incremented = false
+	while !incremented and index>=0
+		if (binarray[index]==0)
+			binarray[index] = 1
+			incremented = true
+			break
+		else
+			binarray[index]=0
 		end
-
-		def binaryincrement(binarray)
-			index = binarray.size-1
-			incremented = false
-			while !incremented and index>=0
-				if (binarray[index]==0)
-					binarray[index] = 1
-					incremented = true
-					break
-				else
-					binarray[index]=0
-				end
-				index -= 1
-			end
-			return binarray
-		end
-
-		def leet_variations(word, swap_array)
-			count = 0
-			swap_array.keys.each do |key|
-				count += word.count(key)
-			end
-
-			variation = Array.new(count,0)
-			leetletterpos = Array.new(count,0)
-			variationarr = []
-	# Save the indexes where the leet letters can be substituted
-	pos = 0
-	iter = 0
-	tmpword = word.dup
-
-	swap_array.each do |char, replace|
-		pos = 0
-		while (!(pos=tmpword.index(char)).nil?)
-			leetletterpos[iter] = pos
-			tmpword[pos]="$"
-			iter += 1
-		end
+		index -= 1
 	end
-	# Create all posible combinations of subtitutions
-	src_chars = swap_array.keys.join
-	dst_chars = swap_array.values.join
+  return binarray
+end
 
-	begin
-		tmpword = word.dup
-		variation = binaryincrement(variation)
-		idx = 0
-		variation.each{|changeletter|
-			if (changeletter==1)
-				# Tried tr! but it won't replace inline, probably because it doesn't know where the slice is happening
-				tmpword[leetletterpos[idx],1] = tmpword[leetletterpos[idx],1].tr(src_chars, dst_chars)
-			end
-			idx += 1
-		}
-		variationarr << tmpword
-	end while (variation != Array.new(count,1))
+def leet_variations(word, swap_array)
+  count = 0
+	swap_array.keys.each do |key|
+	count += word.count(key)
+end
+
+variation = Array.new(count,0)
+leetletterpos = Array.new(count,0)
+variationarr = []
+# Save the indexes where the leet letters can be substituted
+pos = 0
+iter = 0
+tmpword = word.dup
+
+swap_array.each do |char, replace|
+	pos = 0
+	while (!(pos=tmpword.index(char)).nil?)
+		leetletterpos[iter] = pos
+		tmpword[pos]="$"
+		iter += 1
+	end
+end
+# Create all posible combinations of subtitutions
+src_chars = swap_array.keys.join
+dst_chars = swap_array.values.join
+
+begin
+  tmpword = word.dup
+	variation = binaryincrement(variation)
+	idx = 0
+	variation.each{|changeletter|
+		if (changeletter==1)
+			# Tried tr! but it won't replace inline, probably because it doesn't know where the slice is happening
+			tmpword[leetletterpos[idx],1] = tmpword[leetletterpos[idx],1].tr(src_chars, dst_chars)
+		end
+		idx += 1
+	}
+	variationarr << tmpword
+end while (variation != Array.new(count,1))
 	return variationarr
 end
 
