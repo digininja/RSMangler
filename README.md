@@ -11,6 +11,7 @@ permutations mode which takes each word in the list and combines it with the
 others to produce all possible permutations (not combinations, order matters).
 For example the words freds, fresh, fish will produce the following list:
 
+```
 freds
 fresh
 fish
@@ -26,13 +27,14 @@ freshfredsfish
 freshfishfreds
 fishfredsfresh
 fishfreshfreds
+```
 
 It also creates an acronym from the words in order, for example the terms
-
+```
 proactive
 security
 management
-
+```
 would give the acronym "psm". This acronym is then added to the list of terms used
 in the rest of the mangling.
 
@@ -66,6 +68,7 @@ Usage
 
 Note, all mangle options are ON by default, these parameters turn them OFF
 
+```
 rsmangler.rb [OPTION]
 
 --help, -h: show help
@@ -90,6 +93,7 @@ rsmangler.rb [OPTION]
 --acronym: create an acronym based on all the words entered in order and add to word list
 --common: add the following words to start and end: admin, sys, pw, pwd
 --force: don't give the warning about list length
+```
 
 Change Log
 ==========
