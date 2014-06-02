@@ -28,12 +28,17 @@ require 'getoptlong'
 
 leet_swap = {
   's' => '$',
+  's' => 'z',
   'e' => '3',
   'a' => '4',
+  'a' => '@',
   'o' => '0',
   'i' => '1',
+  'i' => '!',
   'l' => '1',
   't' => '7',
+  'b' => '8',
+  'z' => '2',
 }
 
 # Common words to append and prepend if --common is allowed
