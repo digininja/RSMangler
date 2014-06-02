@@ -1,4 +1,4 @@
-![alt text](http://www.randomstorm.com/images/rsmangler_grey.png "RSMangler")
+![alt text](https://www.randomstorm.com/images/tools/rsmanglerLogo.png "RSMangler")
 
 RSMangler: Take a wordlist and mangle it
 ========================================
