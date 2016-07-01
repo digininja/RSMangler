@@ -47,7 +47,24 @@ common_words = [
   'pw',
   'pwd',
   'admin',
-  'sys'
+  'sys',
+  '123456',
+  '12345678',
+  '1234',
+  '123',
+  'jesus',
+  'passwsord',
+  'love',
+  'princess',
+  'blessed',
+  'sunshine',
+  'faith',
+  'phpbb',
+  'qwerty',
+  'letmein',
+  'abc',
+  'iloveyou',
+  'test'
 ]
 
 opts = GetoptLong.new(
@@ -76,7 +93,8 @@ opts = GetoptLong.new(
   ['--na', GetoptLong::NO_ARGUMENT],
   ['--force', GetoptLong::NO_ARGUMENT],
   ['--space', GetoptLong::NO_ARGUMENT],
-  ['-v', GetoptLong::NO_ARGUMENT]
+  ['-v', GetoptLong::NO_ARGUMENT],
+  ['--prep-words', GetoptLong::NO_ARGUMENT]
 )
 
 def good_call
@@ -94,7 +112,7 @@ def usage
 
     cat wordlist.txt | ./rsmangler.rb --file - > new_wordlist.rb
 
-    All options are ON by default, these parameters turn them OFF
+    All options are off by default except --perms, these parameters turn them on
 
     Usage: rsmangler.rb [OPTION]
     --help, -h: show help
@@ -122,6 +140,9 @@ def usage
     --nb: add 1 - 123 to the beginning of the word
     --force - don\'t check ooutput size
     --space - add spaces between words
+    --prep-words - run all the additional commands on the entire generated wordlist before running permutations
+
+    It might be a good idea to pipe everything through uniq (./rsmangler.rb | uniq) as there are probably going to be a few doubles (though not a lot)
 
     '
 
@@ -187,30 +208,31 @@ end while variation != Array.new(count, 1)
 end
 
 verbose     = false
-leet        = true
-full_leet   = true
+leet        = false
+full_leet   = false
 perms       = true
-double      = true
-reverse     = true
-capital     = true
-upper       = true
-lower       = true
-swap        = true
-ed          = true
-ing         = true
-punctuation = true
-years       = true
-acronym     = true
-common      = true
-pna         = true
-pnb         = true
-na          = true
-nb          = true
+double      = false
+reverse     = false
+capital     = false
+upper       = false
+lower       = false
+swap        = false
+ed          = false
+ing         = false
+punctuation = false
+years       = false
+acronym     = false
+common      = false
+pna         = false
+pnb         = false
+na          = false
+nb          = false
 force       = false
 space       = false
 file_handle = nil
 min_length  = nil
 max_length  = nil
+prep_words  = false
 
 begin
   opts.each do |opt, arg|
@@ -233,49 +255,51 @@ begin
     when '--min'
       min_length = arg.to_i
     when '--leet'
-      leet = false
+      leet = true
     when '--full-leet'
-      full_leet = false
+      full_leet = true
     when '--perms'
       perms = false
     when '--double'
-      double = false
+      double = true
     when '--reverse'
-      reverse = false
+      reverse = true
     when '--capital'
-      capital = false
+      capital = true
     when '--upper'
-      upper = false
+      upper = true
     when '--lower'
-      lower = false
+      lower = true
     when '--swap'
-      swap = false
+      swap = true
     when '--ed'
-      ed = false
+      ed = true
     when '--ing'
-      ing = false
+      ing = true
     when '--common'
-      common = false
+      common = true
     when '--acronym'
-      acronym = false
+      acronym = true
     when '--years'
-      years = false
+      years = true
     when '--punctuation'
-      punctuation = false
+      punctuation = true
     when '--pna'
-      pna = false
+      pna = true
     when '--pnb'
-      pnb = false
+      pnb = true
     when '--na'
-      na = false
+      na = true
     when '--nb'
-      nb = false
+      nb = true
     when '--space'
       space = true
     when '--force'
       force = true
     when '-v'
       verbose = true
+    when '--prep-words'
+      prep_words = true
     end
   end
 rescue => e
@@ -301,6 +325,7 @@ file_handle.close
 if !force && perms && file_words.length > 5
   puts '5 words in a start list creates a dictionary of nearly 100,000 words.'
   puts 'You have ' + file_words.length.to_s + ' words in your list, are you sure you wish to continue?'
+  puts 'That is over ' + file_words.length.to_s  + ' to the power of ' + file_words.length.to_s + ' combinations. Be prepared to wait.'
   puts 'Hit ctrl-c to abort'
   puts
 
@@ -320,9 +345,14 @@ end
 
 wordlist = []
 
-if perms
-  for i in (1..file_words.length)
-    file_words.permutation(i) { |c| wordlist << c.join }
+if !prep_words
+  if perms
+    for i in (1..file_words.length)
+      file_words.permutation(i) { |c| wordlist << c.join }
+      #file_words.permutation(i) { |c| puts c.join }
+    end
+  else
+    wordlist = file_words
   end
 else
   wordlist = file_words
@@ -337,6 +367,7 @@ if acronym
 end
 
 results = []
+result = ""
 
 xcommon = false
 wordlist.each do |x|
@@ -408,6 +439,37 @@ end
 
 results.uniq!
 
+
+
+if prep_words
+  if perms
+    for i in (1..results.length)
+      results.permutation(i) { |c| newc = c.join
+        if !max_length.nil? || !min_length.nil?
+            if !max_length.nil? && !min_length.nil?
+              res = newc.length < min_length || newc.length > max_length
+            elsif !min_length.nil?
+              res = newc.length < min_length
+            elsif !max_length.nil?
+              res = newc.length > max_length
+            end
+            if !res
+              puts newc
+            end
+          else
+            puts newc
+          end
+
+      }
+    end
+
+end
+else
+  results.each do |c|
+    puts c
+  end
+end
+
 if !max_length.nil? || !min_length.nil?
   results.delete_if do |x|
     res = false
@@ -421,7 +483,5 @@ if !max_length.nil? || !min_length.nil?
     res
   end
 end
-
-puts results
 
 exit
