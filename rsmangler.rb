@@ -10,17 +10,19 @@
 #
 # See the README for full information
 #
-# Original Author:: Robin Wood (robin@digininja.org)
-# Version:: 1.4
-# Copyright:: Copyright(c) 2012-2013, RandomStorm Limited - www.randomstorm.com
+# Original Author:: Robin Wood (robin@digi.ninja)
+# Version:: 1.5 alpha
+# Copyright:: Copyright(c) 2017 Robin Wood - https://digi.ninja
 # Licence:: Creative Commons Attribution-Share Alike 2.0
 #
 # Changes:
+# 1.5 alpha - Working on writing straight to disk rather than to STDOUT
 # 1.4 - Added full leetspeak option, thanks Felipe Molina (@felmoltor)
 #
 
 require 'date'
 require 'getoptlong'
+require 'zlib'
 
 # The left hand character is what you are looking for
 # and the right hand one is the one you are replacing it
@@ -28,13 +30,10 @@ require 'getoptlong'
 
 leet_swap = {
   's' => '$',
-  's' => 'z',
   'e' => '3',
   'a' => '4',
-  'a' => '@',
   'o' => '0',
   'i' => '1',
-  'i' => '!',
   'l' => '1',
   't' => '7',
   'b' => '8',
@@ -336,11 +335,16 @@ if acronym
   wordlist << acro
 end
 
-results = []
 
 xcommon = false
+
+fout = File.new("fout", "w")
+fout.write(x)
+
+uniq_crcs = []
+
 wordlist.each do |x|
-  results << x
+	results = []
 
   results << x + x if double
   results << x.reverse if reverse
@@ -404,24 +408,30 @@ wordlist.each do |x|
       results << x + i.to_s if na
     end
   end
+
+	results.uniq!
+
+	if !max_length.nil? || !min_length.nil?
+	  results.delete_if do |x|
+		res = false
+		if !max_length.nil? && !min_length.nil?
+		  res = x.length < min_length || x.length > max_length
+		elsif !min_length.nil?
+		  res = x.length < min_length
+		elsif !max_length.nil?
+		  res = x.length > max_length
+		end
+		res
+	  end
+	end
+
+	# The uniq_crcs array contains a crc of all words previously written,
+	# this should prevent duplicates being written out to the file
+	results.each do |res|
+		crc = Zlib::crc32(res)
+		if not uniq_crcs.include?(crc)
+			uniq_crcs << crc
+			fout.puts(res)
+		end
+	end
 end
-
-results.uniq!
-
-if !max_length.nil? || !min_length.nil?
-  results.delete_if do |x|
-    res = false
-    if !max_length.nil? && !min_length.nil?
-      res = x.length < min_length || x.length > max_length
-    elsif !min_length.nil?
-      res = x.length < min_length
-    elsif !max_length.nil?
-      res = x.length > max_length
-    end
-    res
-  end
-end
-
-puts results
-
-exit
