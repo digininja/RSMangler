@@ -25,19 +25,19 @@ require 'getoptlong'
 require 'zlib'
 
 # The left hand character is what you are looking for
-# and the right hand one is the one you are replacing it
+# and the right hand array is the one you are replacing it
 # with
 
 leet_swap = {
-	's' => '$',
-	'e' => '3',
-	'a' => '4',
-	'o' => '0',
-	'i' => '1',
-	'l' => '1',
-	't' => '7',
-	'b' => '8',
-	'z' => '2',
+	's' => ['$', 'z'],
+	'e' => ['3'],
+	'a' => ['4', '@'],
+	'o' => ['0'],
+	'i' => ['1', '!'],
+	'l' => ['1', '!'],
+	't' => ['7'],
+	'b' => ['8'],
+	'z' => ['2'],
 }
 
 # Common words to append and prepend if --common is allowed
@@ -87,6 +87,12 @@ def good_call
 	exit
 end
 
+def leet_variations (str, swap)
+	vals = swap.values_at(*str.chars)
+	vals.first.product(*vals.drop(1)).to_a
+	return vals
+end
+
 # Display the usage
 def usage
 	puts 'rsmangler v 1.4 Robin Wood (robin@digininja.org) <www.randomstorm.com>
@@ -129,64 +135,6 @@ To pass the initial words in on standard in do:
 '
 
 	exit
-end
-
-def binaryincrement(binarray)
-	index = binarray.size - 1
-	incremented = false
-	while !incremented && index >= 0
-		if binarray[index] == 0
-			binarray[index] = 1
-			incremented = true
-			break
-		else
-			binarray[index] = 0
-		end
-		index -= 1
-	end
-	return binarray
-end
-
-def leet_variations(word, swap_array)
-	count = 0
-	swap_array.keys.each do |key|
-	count += word.count(key)
-end
-
-variation		 = Array.new(count, 0)
-leetletterpos = Array.new(count, 0)
-variationarr	= []
-# Save the indexes where the leet letters can be substituted
-pos					 = 0
-iter					= 0
-tmpword			 = word.dup
-
-swap_array.each do |char, replace|
-	pos = 0
-	while !(pos = tmpword.index(char)).nil?
-		leetletterpos[iter] = pos
-		tmpword[pos] = '$'
-		iter += 1
-	end
-end
-# Create all posible combinations of subtitutions
-src_chars = swap_array.keys.join
-dst_chars = swap_array.values.join
-
-begin
-	tmpword = word.dup
-	variation = binaryincrement(variation)
-	idx = 0
-	variation.each do |changeletter|
-		if changeletter == 1
-			# Tried tr! but it won't replace inline, probably because it doesn't know where the slice is happening
-			tmpword[leetletterpos[idx], 1] = tmpword[leetletterpos[idx], 1].tr(src_chars, dst_chars)
-		end
-		idx += 1
-	end
-	variationarr << tmpword
-end while variation != Array.new(count, 1)
-	return variationarr
 end
 
 verbose = false
@@ -353,9 +301,6 @@ if acronym
 	file_words.each { |c| acro += c[0, 1] }
 	wordlist << acro
 end
-
-
-xcommon = false
 
 fout = File.new("fout", "w")
 fout.write(x)
