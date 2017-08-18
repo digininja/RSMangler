@@ -88,9 +88,9 @@ def good_call
 end
 
 def leet_variations (str, swap)
-	vals = swap.values_at(*str.chars)
-	vals.first.product(*vals.drop(1)).to_a
-	return vals
+  swap_all = Hash.new { |_,k| [k] }.merge(swap) 
+  arr = swap_all.values_at(*str.chars)
+  arr.shift.product(*arr).map(&:join)
 end
 
 # Display the usage
@@ -401,5 +401,6 @@ wordlist.each do |x|
 		else
 			output_handle.puts(res)
 		end
+		output_handle.flush
 	end
 end
