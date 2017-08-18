@@ -76,7 +76,7 @@ opts = GetoptLong.new(
 	['--na', GetoptLong::NO_ARGUMENT],
 	['--force', GetoptLong::NO_ARGUMENT],
 	['--space', GetoptLong::NO_ARGUMENT],
-	['--deduplicate', GetoptLong::NO_ARGUMENT],
+	['--allow-duplicates', GetoptLong::NO_ARGUMENT],
 	['-v', GetoptLong::NO_ARGUMENT]
 )
 
@@ -130,7 +130,7 @@ To pass the initial words in on standard in do:
 	--nb: add 1 - 123 to the beginning of the word
 	--force - don\'t check ooutput size
 	--space - add spaces between words
-	--deduplicate - remove deplicates from the output list
+	--allow-duplicates - allow duplicates in the output list
 
 '
 
@@ -159,7 +159,7 @@ na = true
 nb = true
 force = false
 space = false
-deduplicate = false
+deduplicate = true
 file_handle = nil
 output_handle = STDOUT
 min_length = nil
@@ -192,8 +192,8 @@ begin
 					exit
 				end
 			end
-		when '--deduplicate'
-			deduplicate = true
+		when '--allow-duplicates'
+			deduplicate = false
 		when '--max'
 			max_length = arg.to_i
 		when '--min'
