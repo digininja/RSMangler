@@ -2,6 +2,7 @@ RSMangler: Take a wordlist and mangle it
 ========================================
 
 Copyright(c) 2017, Robin Wood https://digi.ninja <robin@digi.ninja>
+
 Version 1.5
 
 RSMangler will take a wordlist and perform various manipulations on it similar
@@ -100,20 +101,20 @@ Change Log
 ==========
 
 - 25.08.2017 - v1.5
-  Stopped caching output in memory
-  Added the option to allow duplicate in output
-  Added the option to output to file
-  Impreoved the leet conversions
+  - Stopped caching output in memory
+  - Added the option to allow duplicate in output
+  - Added the option to output to file
+  - Impreoved the leet conversions
 
-- 23.10.2012 - v1.4  
-  Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
-  Added Support for ruby 1.9.x
+- 23.10.2012 - v1.4
+  - Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
+  - Added Support for ruby 1.9.x
 
-- 24.08.2010 - v1.1  
-  Added three new mangles - years, acronym, and common.
+- 24.08.2010 - v1.1
+  - Added three new mangles - years, acronym, and common.
 
-- 13.07.2010 - v1.0  
-  Initial release
+- 13.07.2010 - v1.0
+  - Initial release
 
 Licence
 =======
@@ -126,10 +127,10 @@ UK: England & Wales
 Credits
 =======
 
-Thanks to Thomas d'Otreppe for helping bring the project back to life after 5
+- Thanks to Thomas d'Otreppe for helping bring the project back to life after 5
 years of neglect.
-Thanks to Felipe Molina for the initial l33t speak functions.
-Credit to Gavin Watson who had the original idea for this project.
+- Thanks to Felipe Molina for the initial l33t speak functions.
+- Credit to Gavin Watson who had the original idea for this project.
 
 Bugs, Comments, Feedback
 ========================
