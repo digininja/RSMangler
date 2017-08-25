@@ -55,7 +55,21 @@ New mangles in 1.1 are adding all years between 1990 and this year to the start
 and end and adding sys, admin, pw and pwd to the start and end.
 
 The initial wordlist can either be specified as a file or can be piped in
-through STDIN.
+through STDIN. Output goes to STDOUT (screen) by default but can be sent
+to a file through the --output parameter.
+
+By default, the script does not output any duplicate mangled words. Prior to
+version 1.5, this was done by caching all the mangled words in memory and, 
+before sending the words to screen, using the uniq function to strip any
+duplicates. This caused the app to use up a lot of memory as it had to store
+potentially thousands of strings before finally running the output. At a
+sugestion by Thomas d'Otreppe, the app now generates a CRC32 of each word and,
+if it has not seen the value before, sends it to be output and stores the CRC.
+If it has seen it, then it just drops the word. This allows the mangled words
+to be output as soon as they are generated while keeping memory usage to a
+minimum as it only requires the storage of a single integer per word rather
+than a full string. The option to remove duplicates can also be disabled,
+this makes for faster output and removes memory usage.
 
 Installation
 ============
