@@ -97,16 +97,24 @@ end
 def usage
 	puts 'rsmangler v 1.4 Robin Wood (robin@digininja.org) <www.randomstorm.com>
 
+Basic usage:
+
+	./rsmangler.rb --file wordlist.txt
+
 To pass the initial words in on standard in do:
 
-	cat wordlist.txt | ./rsmangler.rb --file - > new_wordlist.rb
+	cat wordlist.txt | ./rsmangler.rb
+
+To send the output to a file:
+
+	./rsmangler.rb --file wordlist.txt --output mangled.txt
 
 	All options are ON by default, these parameters turn them OFF
 
 	Usage: rsmangler.rb [OPTION]
 	--help, -h: show help
 	--file, -f: the input file, use - for STDIN
-	--output, -0: the output file, use - for STDIN
+	--output, -o: the output file, use - for STDOUT
 	--max, -x: maximum word length
 	--min, -m: minimum word length
 	--perms, -p: permutate all the words
