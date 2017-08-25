@@ -80,7 +80,7 @@ external.
 Usage
 =====
 
-Note, all mangle options are ON by default, these parameters turn them OFF
+Note, all mangle options are ON by default, these parameters turn them OFF.
 
 ```
 rsmangler.rb [OPTION]
