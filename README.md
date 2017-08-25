@@ -1,11 +1,8 @@
-![alt text](https://www.randomstorm.com/images/tools/rsmanglerLogo.png "RSMangler")
-
 RSMangler: Take a wordlist and mangle it
 ========================================
 
-Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com  
-Robin Wood <robin@digininja.org>  
-Version 1.4
+Copyright(c) 2017, Robin Wood https://digi.ninja <robin@digi.ninja>
+Version 1.5
 
 RSMangler will take a wordlist and perform various manipulations on it similar
 to those done by John the Ripper with a few extras. The main new feature is
@@ -95,10 +92,18 @@ rsmangler.rb [OPTION]
 --acronym: create an acronym based on all the words entered in order and add to word list
 --common: add the following words to start and end: admin, sys, pw, pwd
 --force: don't give the warning about list length
+--allow-duplicates - allow duplicates in the output list
+
 ```
 
 Change Log
 ==========
+
+- 25.08.2017 - v1.5
+  Stopped caching output in memory
+  Added the option to allow duplicate in output
+  Added the option to output to file
+  Impreoved the leet conversions
 
 - 23.10.2012 - v1.4  
   Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
@@ -121,10 +126,12 @@ UK: England & Wales
 Credits
 =======
 
-Full credit to Gavin Watson (h4nd13) who had the original idea for this project and
-has helped test at every stage.
+Thanks to Thomas d'Otreppe for helping bring the project back to life after 5
+years of neglect.
+Thanks to Felipe Molina for the initial l33t speak functions.
+Credit to Gavin Watson who had the original idea for this project.
 
 Bugs, Comments, Feedback
 ========================
 
-Feel free to get in touch, robin.wood@randomstorm.com
+Feel free to get in touch, robin@digi.ninja
