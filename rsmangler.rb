@@ -352,6 +352,7 @@ if acronym
 	file_words.each do |c|
 		acro += c[0, 1]
 	end
+	puts_if_allowed(acro)
 	wordlist << acro
 end
 
