@@ -136,9 +136,9 @@ To send the output to a file:
 	--pnb: add 01 - 09 to the beginning of the word
 	--na: add 1 - 123 to the end of the word
 	--nb: add 1 - 123 to the beginning of the word
-	--force - don\'t check ooutput size
-	--space - add spaces between words
-	--allow-duplicates - allow duplicates in the output list
+	--force: don\'t check output size
+	--space: add spaces between words
+	--allow-duplicates: allow duplicates in the output list
 
 '
 
