@@ -95,7 +95,7 @@ end
 
 # Display the usage
 def usage
-	puts 'rsmangler v 1.4 Robin Wood (robin@digininja.org) <www.randomstorm.com>
+	puts 'rsmangler v 1.5 Robin Wood (robin@digi.ninja) <https://digi.ninja>
 
 Basic usage:
 
@@ -145,6 +145,19 @@ To send the output to a file:
 	exit
 end
 
+def puts_if_allowed(word)
+	if @deduplicate
+		crc = Zlib::crc32(word)
+		if not @uniq_crcs.include?(crc)
+			@uniq_crcs << crc
+			@output_handle.puts(word)
+		end
+	else
+		@output_handle.puts(word)
+	end
+	@output_handle.flush
+end
+
 verbose = false
 leet = true
 full_leet = true
@@ -167,11 +180,13 @@ na = true
 nb = true
 force = false
 space = false
-deduplicate = true
 file_handle = nil
-output_handle = STDOUT
 min_length = nil
 max_length = nil
+@deduplicate = true
+@output_handle = STDOUT
+@uniq_crcs = []
+@debug = false
 
 begin
 	opts.each do |opt, arg|
@@ -180,10 +195,10 @@ begin
 			usage
 		when '--output'
 			if arg == '-'
-				output_handle = STDOUT
+				@output_handle = STDOUT
 			else
 				begin
-					output_handle = File.new(arg, 'w')
+					@output_handle = File.new(arg, 'w')
 				rescue Errno::EACCES
 					puts "Could not create the output file"
 					exit
@@ -201,7 +216,7 @@ begin
 				end
 			end
 		when '--allow-duplicates'
-			deduplicate = false
+			@deduplicate = false
 		when '--max'
 			max_length = arg.to_i
 		when '--min'
@@ -255,6 +270,7 @@ begin
 rescue => e
 	puts e
 	usage
+	exit
 end
 
 if file_handle.nil?
@@ -265,14 +281,16 @@ if file_handle.nil?
 end
 
 file_words = []
-while (x = file_handle.gets)
-	x.chomp!
-	file_words << x
+
+puts "Loading in the list" if @debug
+
+while (word = file_handle.gets)
+	file_words << word.chomp!
 end
 
 file_handle.close
 
-if !force && perms && file_words.length > 5
+if !force and perms and file_words.length > 5
 	puts '5 words in a start list creates a dictionary of nearly 100,000 words.'
 	puts 'You have ' + file_words.length.to_s + ' words in your list, are you sure you wish to continue?'
 	puts 'Hit ctrl-c to abort'
@@ -295,26 +313,33 @@ end
 wordlist = []
 
 if perms
+	puts "Generating the permutations" if @debug
 	for i in (1..file_words.length)
-		file_words.permutation(i) { |c| wordlist << c.join }
+		file_words.permutation(i) do |c|
+			perm = c.join
+			wordlist << perm
+			puts_if_allowed(perm)
+		end
 	end
 else
 	wordlist = file_words
 end
 
+puts "Permutations generated" if @debug
+
 acro = nil
 
 if acronym
+	puts "Generating the acronyms" if @debug
+
 	acro = ''
-	file_words.each { |c| acro += c[0, 1] }
+	file_words.each do |c|
+		acro += c[0, 1]
+	end
 	wordlist << acro
 end
 
-fout = File.new("fout", "w")
-fout.write(x)
-
-uniq_crcs = []
-
+puts "Doing the mangling" if @debug
 wordlist.each do |x|
 	results = []
 
@@ -400,15 +425,6 @@ wordlist.each do |x|
 	# The uniq_crcs array contains a crc of all words previously written,
 	# this should prevent duplicates being written out to the file
 	results.each do |res|
-		if deduplicate
-			crc = Zlib::crc32(res)
-			if not uniq_crcs.include?(crc)
-				uniq_crcs << crc
-				output_handle.puts(res)
-			end
-		else
-			output_handle.puts(res)
-		end
-		output_handle.flush
+		puts_if_allowed(res)
 	end
 end
