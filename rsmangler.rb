@@ -145,7 +145,23 @@ To send the output to a file:
 	exit
 end
 
+# The uniq_crcs array contains a crc of all words previously written,
+# this should prevent duplicates being written out to the file
 def puts_if_allowed(word)
+
+	if not @max_length.nil? or not @min_length.nil?
+		if not @min_length.nil?
+			if word.length < @min_length
+				return
+			end
+		end
+		if not @max_length.nil?
+			if word.length > @max_length
+				return
+			end
+		end
+	end
+
 	if @deduplicate
 		crc = Zlib::crc32(word)
 		if not @uniq_crcs.include?(crc)
@@ -181,8 +197,8 @@ nb = true
 force = false
 space = false
 file_handle = nil
-min_length = nil
-max_length = nil
+@min_length = nil
+@max_length = nil
 @deduplicate = true
 @output_handle = STDOUT
 @uniq_crcs = []
@@ -218,9 +234,9 @@ begin
 		when '--allow-duplicates'
 			@deduplicate = false
 		when '--max'
-			max_length = arg.to_i
+			@max_length = arg.to_i
 		when '--min'
-			min_length = arg.to_i
+			@min_length = arg.to_i
 		when '--leet'
 			leet = false
 		when '--full-leet'
@@ -408,22 +424,6 @@ wordlist.each do |x|
 
 	results.uniq!
 
-	if !max_length.nil? || !min_length.nil?
-		results.delete_if do |x|
-		res = false
-		if !max_length.nil? && !min_length.nil?
-			res = x.length < min_length || x.length > max_length
-		elsif !min_length.nil?
-			res = x.length < min_length
-		elsif !max_length.nil?
-			res = x.length > max_length
-		end
-		res
-		end
-	end
-
-	# The uniq_crcs array contains a crc of all words previously written,
-	# this should prevent duplicates being written out to the file
 	results.each do |res|
 		puts_if_allowed(res)
 	end
