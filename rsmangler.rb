@@ -196,7 +196,7 @@ na = true
 nb = true
 force = false
 space = false
-file_handle = nil
+input_file_handle = nil
 @min_length = nil
 @max_length = nil
 @deduplicate = true
@@ -222,10 +222,10 @@ begin
 			end
 		when '--file'
 			if arg == '-'
-				file_handle = STDIN
+				input_file_handle = STDIN
 			else
 				if File.exist? arg
-					file_handle = File.new(arg, 'r')
+					input_file_handle = File.new(arg, 'r')
 				else
 					puts 'The specified file does not exist'
 					exit
@@ -289,7 +289,7 @@ rescue => e
 	exit
 end
 
-if file_handle.nil?
+if input_file_handle.nil?
 	puts 'No input file specified'
 	puts
 	usage
@@ -300,11 +300,11 @@ file_words = []
 
 puts "Loading in the list" if @debug
 
-while (word = file_handle.gets)
+while (word = input_file_handle.gets)
 	file_words << word.chomp!
 end
 
-file_handle.close
+input_file_handle.close
 
 if !force and perms and file_words.length > 5
 	puts '5 words in a start list creates a dictionary of nearly 100,000 words.'
