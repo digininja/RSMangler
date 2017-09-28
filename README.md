@@ -116,9 +116,9 @@ Change Log
 
 - 25.08.2017 - v1.5
   - Stopped caching output in memory
-  - Added the option to allow duplicate in output
+  - Added the option to allow duplicate in output - Uses less memory
   - Added the option to output to file
-  - Impreoved the leet conversions
+  - Improved the leet conversions
 
 - 23.10.2012 - v1.4
   - Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
