@@ -1,9 +1,9 @@
 RSMangler: Take a wordlist and mangle it
 ========================================
 
-Copyright(c) 2012, RandomStorm Limited - www.randomstorm.com  
-Robin Wood <robin@digininja.org>  
-Version 1.4
+Copyright(c) 2017, Robin Wood https://digi.ninja <robin@digi.ninja>
+
+Version 1.5
 
 RSMangler will take a wordlist and perform various manipulations on it similar
 to those done by John the Ripper with a few extras. The main new feature is
@@ -55,7 +55,21 @@ New mangles in 1.1 are adding all years between 1990 and this year to the start
 and end and adding sys, admin, pw and pwd to the start and end.
 
 The initial wordlist can either be specified as a file or can be piped in
-through STDIN.
+through STDIN. Output goes to STDOUT (screen) by default but can be sent
+to a file through the --output parameter.
+
+By default, the script does not output any duplicate mangled words. Prior to
+version 1.5, this was done by caching all the mangled words in memory and, 
+before sending the words to screen, using the uniq function to strip any
+duplicates. This caused the app to use up a lot of memory as it had to store
+potentially thousands of strings before finally running the output. At a
+sugestion by Thomas d'Otreppe, the app now generates a CRC32 of each word and,
+if it has not seen the value before, sends it to be output and stores the CRC.
+If it has seen it, then it just drops the word. This allows the mangled words
+to be output as soon as they are generated while keeping memory usage to a
+minimum as it only requires the storage of a single integer per word rather
+than a full string. The option to remove duplicates can also be disabled,
+this makes for faster output and removes memory usage.
 
 Installation
 ============
@@ -66,7 +80,7 @@ external.
 Usage
 =====
 
-Note, all mangle options are ON by default, these parameters turn them OFF
+Note, all mangle options are ON by default, these parameters turn them OFF.
 
 ```
 rsmangler.rb [OPTION]
@@ -93,20 +107,28 @@ rsmangler.rb [OPTION]
 --acronym: create an acronym based on all the words entered in order and add to word list
 --common: add the following words to start and end: admin, sys, pw, pwd
 --force: don't give the warning about list length
+--allow-duplicates - allow duplicates in the output list
+
 ```
 
 Change Log
 ==========
 
-- 23.10.2012 - v1.4  
-  Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
-  Added Support for ruby 1.9.x
+- 28.09.2017 - v1.5
+  - Stopped caching output in memory
+  - Added the option to allow duplicate in output - Uses less memory
+  - Added the option to output to file
+  - Improved the leet conversions
 
-- 24.08.2010 - v1.1  
-  Added three new mangles - years, acronym, and common.
+- 23.10.2012 - v1.4
+  - Added full leetspeak option, thanks Felipe Molina (@felmoltor)  
+  - Added Support for ruby 1.9.x
 
-- 13.07.2010 - v1.0  
-  Initial release
+- 24.08.2010 - v1.1
+  - Added three new mangles - years, acronym, and common.
+
+- 13.07.2010 - v1.0
+  - Initial release
 
 Licence
 =======
@@ -119,10 +141,12 @@ UK: England & Wales
 Credits
 =======
 
-Full credit to Gavin Watson (h4nd13) who had the original idea for this project and
-has helped test at every stage.
+- Thanks to Thomas d'Otreppe for helping bring the project back to life after 5
+years of neglect.
+- Thanks to Felipe Molina for the initial l33t speak functions.
+- Credit to Gavin Watson who had the original idea for this project.
 
 Bugs, Comments, Feedback
 ========================
 
-Feel free to get in touch, robin.wood@randomstorm.com
+Feel free to get in touch, robin@digi.ninja
