@@ -114,7 +114,7 @@ rsmangler.rb [OPTION]
 Change Log
 ==========
 
-- 25.08.2017 - v1.5
+- 28.09.2017 - v1.5
   - Stopped caching output in memory
   - Added the option to allow duplicate in output - Uses less memory
   - Added the option to output to file
