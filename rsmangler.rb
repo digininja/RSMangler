@@ -77,7 +77,7 @@ opts = GetoptLong.new(
 	['--na', GetoptLong::NO_ARGUMENT],
 	['--force', GetoptLong::NO_ARGUMENT],
 	['--space', GetoptLong::NO_ARGUMENT],
-	['--allow-duplicates', GetoptLong::NO_ARGUMENT],
+	['--deduplicate', '-D', GetoptLong::NO_ARGUMENT],
 	['-v', GetoptLong::NO_ARGUMENT]
 )
 
@@ -140,7 +140,7 @@ To send the output to a file:
 	--nb: add 1 - 123 to the beginning of the word
 	--force: don\'t check output size (enable, default is false)
 	--space: add spaces between words (enable, default is false)
-	--allow-duplicates: allow duplicates in the output list
+	--deduplicate: remove duplicates from the output list
 
 '
 
@@ -254,7 +254,7 @@ begin
 			na = false
 			nb = false
 			@deduplicate = false
-		when '--allow-duplicates'
+		when '--deduplicate'
 			@deduplicate ^= true
 		when '--max'
 			@max_length = arg.to_i
