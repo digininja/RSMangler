@@ -51,6 +51,7 @@ common_words = [
 
 opts = GetoptLong.new(
 	['--help', '-h', GetoptLong::NO_ARGUMENT],
+	['--alloff', '-A', GetoptLong::NO_ARGUMENT],
 	['--file', '-f', GetoptLong::REQUIRED_ARGUMENT],
 	['--output', '-o', GetoptLong::REQUIRED_ARGUMENT],
 	['--min', '-m', GetoptLong::REQUIRED_ARGUMENT],
@@ -109,10 +110,11 @@ To send the output to a file:
 
 	./rsmangler.rb --file wordlist.txt --output mangled.txt
 
-	All options are ON by default, these parameters turn them OFF
+	All options are ON by default, these parameters turn them OFF (except force and space)
 
 	Usage: rsmangler.rb [OPTION]
 	--help, -h: show help
+	--alloff, -A: turns all options OFF by default, other parameters turn them ON
 	--file, -f: the input file, use - for STDIN
 	--output, -o: the output file, use - for STDOUT
 	--max, -x: maximum word length
@@ -136,8 +138,8 @@ To send the output to a file:
 	--pnb: add 01 - 09 to the beginning of the word
 	--na: add 1 - 123 to the end of the word
 	--nb: add 1 - 123 to the beginning of the word
-	--force: don\'t check output size
-	--space: add spaces between words
+	--force: don\'t check output size (enable, default is false)
+	--space: add spaces between words (enable, default is false)
 	--allow-duplicates: allow duplicates in the output list
 
 '
@@ -231,50 +233,71 @@ begin
 					exit
 				end
 			end
-		when '--allow-duplicates'
+		when '--alloff'
+			leet = false
+			full_leet = false
+			perms = false
+			double = false
+			reverse = false
+			capital = false
+			upper = false
+			lower = false
+			swap = false
+			ed = false
+			ing = false
+			punctuation = false
+			years = false
+			acronym = false
+			common = false
+			pna = false
+			pnb = false
+			na = false
+			nb = false
 			@deduplicate = false
+		when '--allow-duplicates'
+			@deduplicate ^= true
 		when '--max'
 			@max_length = arg.to_i
 		when '--min'
 			@min_length = arg.to_i
 		when '--leet'
-			leet = false
+			leet ^= true
 		when '--full-leet'
-			full_leet = false
+			full_leet ^= true
 		when '--perms'
-			perms = false
+			perms ^= true
 		when '--double'
-			double = false
+			double ^= true
 		when '--reverse'
-			reverse = false
+			reverse ^= true
 		when '--capital'
-			capital = false
+			capital ^= true
 		when '--upper'
-			upper = false
+			upper ^= true
 		when '--lower'
-			lower = false
+			lower ^= true
 		when '--swap'
-			swap = false
+			swap ^= true
 		when '--ed'
-			ed = false
+			ed ^= true
 		when '--ing'
-			ing = false
+			ing ^= true
 		when '--common'
-			common = false
+			common ^= true
 		when '--acronym'
-			acronym = false
+			acronym ^= true
 		when '--years'
-			years = false
+			years ^= true
 		when '--punctuation'
-			punctuation = false
+			punctuation ^= true
 		when '--pna'
-			pna = false
+			pna ^= true
 		when '--pnb'
-			pnb = false
+			pnb ^= true
 		when '--na'
-			na = false
+			na ^= true
 		when '--nb'
-			nb = false
+			nb ^= true
 		when '--space'
 			space = true
 		when '--force'
