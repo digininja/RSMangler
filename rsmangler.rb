@@ -389,8 +389,9 @@ wordlist.each do |x|
 		all_swapped = x.clone
 		if leet
 			leet_swap.each_pair do |find, rep|
-				all_swapped.gsub!(/#{find}/, rep)
-				results << x.gsub(/#{find}/, rep)
+				# Swap for the first option
+				all_swapped.gsub!(/#{find}/, rep[0])
+				results << x.gsub(/#{find}/, rep[0])
 			end
 			results << all_swapped
 		end
