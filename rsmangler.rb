@@ -301,7 +301,9 @@ file_words = []
 puts "Loading in the list" if @debug
 
 while (word = input_file_handle.gets)
-	file_words << word.chomp!
+	word = word.chomp!
+	next if word.empty?
+	file_words << word
 end
 
 input_file_handle.close
